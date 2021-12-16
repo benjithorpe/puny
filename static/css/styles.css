@@ -1,0 +1,39 @@
+body{
+  background-color: #F5F5F5;
+}
+.uk-logo, .uk-logo:hover, .menu-toggle{
+  color: white;
+}
+.menu-toggle{
+  margin-right: .75em;
+}
+.nav-header{
+  background-color: #01557e;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.uk-navbar-container{
+  background: inherit !important;
+}
+.uk-offcanvas-bar{
+  background-color: #06405c;
+}
+main{
+  padding-top: 1em;
+}
+.uk-card{
+  border-radius: 7px;
+  border: 1px solid lightgrey;
+}
+
+@media screen and (min-width: 768px){
+  .nav-header{
+    padding-left: 5vh;
+    padding-right: 5vh;
+  }
+  .menu-toggle{
+    cursor: pointer;
+    margin: 0
+  }
+}

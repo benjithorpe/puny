@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  {% for post in posts %}
+    <article class="uk-article uk-margin-small-top uk-margin-small-bottom">
+      <div class="uk-card uk-card-small uk-card-hover uk-card-default uk-width-1-2@m">
+        <div class="uk-card-header">
+          <div class="uk-grid-small uk-flex-middle" uk-grid>
+            <div class="uk-width-auto">
+              <img class="uk-border-circle" width="50" height="50" uk-img
+                data-src="{{ url_for('static', filename='images/profile-avatar.jpeg') }}">
+            </div>
+            <div class="uk-width-expand">
+              <p><a class="uk-text-bold uk-link-reset" href="">{{ post.author }}</a> -
+                <span class="uk-text-meta">{{ post.date_posted }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="uk-card-body">
+          <h3 class="uk-card-title"><a href="">{{ post.title }}</a></h3>
+          <p class="">{{ post.content }}</p>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+{% endblock main %}
