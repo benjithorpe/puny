@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <div>
+    <form action="" method="POST" class="uk-form-stacked uk-padding">
+      {{ form.hidden_tag() }}
+      <fieldset class="uk-fieldset">
+        <legend class="uk-legend">Register A New Account</legend>
+
+        <div class="uk-margin uk-width-1-1">
+          <label class="uk-form-label uk-text-bold" for="form-stacked-text">{{ form.username.label }}</label>
+          <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
+            <span class="uk-form-icon" uk-icon="icon: user"></span>
+            {{ form.username(class="uk-input uk-border-rounded", placeholder="Username") }}
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.email.label }}</label>
+          <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
+            <span class="uk-form-icon" uk-icon="icon: mail"></span>
+            {{ form.email(class="uk-input uk-border-rounded", placeholder="Email Address") }}
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.password.label }}</label>
+          <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
+            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+            {{ form.password(class="uk-input uk-border-rounded", placeholder="Enter a Strong password") }}
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.confirm_password.label }}</label>
+          <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
+            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+            {{ form.confirm_password(class="uk-input uk-border-rounded", placeholder="Confirm Password") }}
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          {{ form.submit(class="uk-button uk-button-primary uk-border-rounded uk-text-bold") }}
+        </div>
+      </fieldset>
+    </form>
+  </div>
+{% endblock main %}

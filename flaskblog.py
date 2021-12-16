@@ -1,6 +1,12 @@
+import os
+
 from flask import Flask, render_template, redirect, url_for
 
+from forms import LoginForm, RegistrationForm
+
+
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or "secret key"
 
 posts = [
     {
@@ -28,6 +34,28 @@ posts = [
 def index_page():
     return render_template("index.html", posts=posts)
 
+
 @app.route("/about")
 def about_page():
     return render_template("about.html")
+
+
+@app.route("/login")
+def login_page():
+    form = LoginForm()
+
+    # if form.submit_on_save():
+    #     pass
+
+    return render_template("login.html", form=form)
+
+
+@app.route("/register")
+def register_page():
+    form = RegistrationForm()
+
+    # if form.submit_on_save():
+    #     pass
+
+    return render_template("register.html", form=form)
+
