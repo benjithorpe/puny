@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 
 {% block main %}
+<section class="articles-post uk-container">
   {% for post in posts %}
     <article class="uk-article uk-margin-small-top uk-margin-small-bottom">
-      <div class="uk-card uk-card-small uk-card-hover uk-card-default uk-width-1-2@m">
+      <div class="uk-card uk-card-small uk-card-hover uk-card-default">
         <div class="uk-card-header">
           <div class="uk-grid-small uk-flex-middle" uk-grid>
             <div class="uk-width-auto">
@@ -24,4 +25,5 @@
       </div>
     </article>
   {% endfor %}
+</section>
 {% endblock main %}

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 
 from forms import LoginForm, RegistrationForm
 
@@ -40,22 +40,28 @@ def about_page():
     return render_template("about.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login_page():
     form = LoginForm()
 
-    # if form.submit_on_save():
-    #     pass
+    if form.validate_on_submit():
+        if form.email.data == "jack@m.com" and form.password.data == "pass":
+            flash("You have been logged in successfully", "success")
+            print("successfully posted")
+            return redirect(url_for("index_page"))
+        else:
+            flash("Invalid Email or Password, Try again!!...", "danger")
 
     return render_template("login.html", form=form)
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register_page():
     form = RegistrationForm()
 
-    # if form.submit_on_save():
-    #     pass
+    if form.validate_on_submit():
+        flash(f"Account Created for {form.username.data}!!!", "success")
+        return redirect(url_for("index_page"))
 
     return render_template("register.html", form=form)
 

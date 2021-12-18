@@ -7,26 +7,33 @@
       <fieldset class="uk-fieldset">
         <legend class="uk-legend">Login To Your Account</legend>
 
-        <div class="uk-margin">
+        <div class="uk-margin-small">
           <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.email.label }}</label>
           <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
             <span class="uk-form-icon" uk-icon="icon: mail"></span>
-            {{ form.email(class="uk-input uk-border-rounded", placeholder="Email Address") }}
+            {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="johndoe@email.com") }}
           </div>
         </div>
 
-        <div class="uk-margin">
+        <div class="uk-margin-small">
           <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.password.label }}</label>
           <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
             <span class="uk-form-icon" uk-icon="icon: lock"></span>
-            {{ form.password(class="uk-input uk-border-rounded", placeholder="Enter Password") }}
+            {{ form.password(class="uk-input uk-border-rounded", placeholder="********") }}
           </div>
         </div>
 
-        <div class="uk-margin">
+        <div class="uk-margin-top">
           {{ form.submit(class="uk-button uk-button-primary uk-border-rounded uk-text-bold") }}
         </div>
       </fieldset>
+
+      <hr class="uk-horizontal-divider uk-width-1-1 uk-width-1-2@s">
+      <div class="uk-margin-small uk-margin-top-remove">
+        <p class="uk-text-small">Need an account? <span>
+          <a href="{{ url_for('register_page') }}">Register Now</a></span>
+        </p>
+      </div>
     </form>
   </div>
 {% endblock main %}

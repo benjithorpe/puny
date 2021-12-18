@@ -28,6 +28,7 @@ main{
   border: 1px solid lightgrey;
 }
 
+
 @media screen and (min-width: 768px){
   .nav-header{
     padding-left: 5vh;
@@ -36,5 +37,15 @@ main{
   .menu-toggle{
     cursor: pointer;
     margin: 0
+  }
+  article.uk-article{
+    width: 75% ;
+    margin: 0 auto;
+  }
+}
+@media screen and (min-width: 992px){
+  article.uk-article{
+    max-width: 55.5% ;
+    margin: 0 auto;
   }
 }
