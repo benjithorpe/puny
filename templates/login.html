@@ -13,6 +13,14 @@
             <span class="uk-form-icon" uk-icon="icon: mail"></span>
             {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="johndoe@email.com") }}
           </div>
+          <!-- display error message if any -->
+          <div>
+            {% if form.email.errors %}
+              {% for error in form.email.errors %}
+                <small class="uk-text-danger">{{ error }}</small>
+              {% endfor %}
+            {% endif %}
+          </div>
         </div>
 
         <div class="uk-margin-small">
@@ -21,6 +29,19 @@
             <span class="uk-form-icon" uk-icon="icon: lock"></span>
             {{ form.password(class="uk-input uk-border-rounded", placeholder="********") }}
           </div>
+          <!-- display error message if any -->
+          <div>
+            {% if form.password.errors %}
+              {% for error in form.password.errors %}
+                <small class="uk-text-danger">{{ error }}</small>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="uk-margin-top">
+          {{ form.remember_me(class="uk-checkbox uk-border-rounded") }}
+          {{ form.remember_me.label(class="uk-text-meta uk-text-italic") }}
         </div>
 
         <div class="uk-margin-top">
@@ -29,6 +50,11 @@
       </fieldset>
 
       <hr class="uk-horizontal-divider uk-width-1-1 uk-width-1-2@s">
+      <!-- forgot password link -->
+      <div class="uk-margin-small uk-margin-top-remove">
+        <p class="uk-text-small uk-text-italic"><a href="#">Forgot Password?</a></p>
+      </div>
+      <!-- create new account link -->
       <div class="uk-margin-small uk-margin-top-remove">
         <p class="uk-text-small">Need an account? <span>
           <a href="{{ url_for('register_page') }}">Register Now</a></span>

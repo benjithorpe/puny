@@ -27,6 +27,9 @@ main{
   border-radius: 7px;
   border: 1px solid lightgrey;
 }
+.form-errors ul{
+  list-style-type: none;
+}
 
 
 @media screen and (min-width: 768px){
