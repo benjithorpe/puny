@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/blog-favicon.jpeg') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
   <title>Flask Blog</title>
   <!-- UIkit CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/css/uikit.min.css" />
@@ -19,7 +19,7 @@
     <nav class="uk-navbar-container" uk-navbar>
       <!-- Navbar/Brand Logo -->
       <div class="uk-navbar-left">
-        <a class="uk-navbar-item uk-logo" href="/">Flask Blog</a>
+        <a class="uk-navbar-item uk-logo" href="{{ url_for('index_page') }}">Flask Blog</a>
       </div>
 
       <!-- Navbar toggle icon -->
@@ -52,7 +52,7 @@
       {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
           {% for category, message in messages %}
-            <div class="uk-alert-{{ category }}" uk-alert>
+            <div class="uk-alert-{{ category }} uk-margin-remove" uk-alert>
               <a class="uk-alert-close" uk-close></a>
               <p>{{ message }}</p>
             </div>

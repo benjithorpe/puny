@@ -1,12 +1,12 @@
 body{
   min-height: 100vh;
-  background-color: #F5F5F5;
+  background-color: #F4F9F9;
 }
 .uk-logo, .uk-logo:hover, .menu-toggle{
   color: white;
 }
 .menu-toggle{
-  margin-right: .75em;
+  margin-right: 1em;
 }
 .nav-header{
   background-color: #01557e;
@@ -25,7 +25,6 @@ main{
 }
 .uk-card{
   border-radius: 7px;
-  border: 1px solid lightgrey;
 }
 .form-errors ul{
   list-style-type: none;
