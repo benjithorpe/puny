@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
   <title>Flask Blog</title>
   <!-- UIkit CSS -->
@@ -13,36 +14,31 @@
   <script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit-icons.min.js"></script>
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <!-- Custom JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </head>
+
 <body>
-  <header class="nav-header">
-    <nav class="uk-navbar-container" uk-navbar>
+  <header class="nav-header uk-box-shadow-small">
+    <nav class="uk-navbar-container uk-flex-middle" uk-navbar>
       <!-- Navbar/Brand Logo -->
       <div class="uk-navbar-left">
-        <a class="uk-navbar-item uk-logo" href="{{ url_for('index_page') }}">Flask Blog</a>
+        <a class="uk-navbar-item uk-logo uk-text-bold uk-text-italic"
+          href="{{ url_for('index_page') }}">Flask Blog</a>
       </div>
-
+      <!-- Navigation items -->
+      <ul class="uk-nav uk-padding-small uk-width-1-1">
+        <li class=""><a href="{{ url_for('index_page') }}"><span class="" uk-icon="home"></span>Home</a></li>
+        <li class=""><a href="{{ url_for('about_page') }}"><span class="" uk-icon="info"></span>About</a></li>
+        <li><a href="{{ url_for('login_page') }}"><span class="" uk-icon="sign-in"></span>Login</a></li>
+        <li><a href="{{ url_for('register_page') }}"><span class="" uk-icon="pencil"></span>Register</a></li>
+      </ul>
       <!-- Navbar toggle icon -->
-      <div class="uk-navbar-right">
-        <div class="menu-toggle" uk-toggle="target: #offcanvas-push">
-          <span class="">Menu</span> <i uk-navbar-toggle-icon></i>
-        </div>
+      <div class="uk-navbar-right burger uk-hidden@s">
+        <span class="uk-navbar-toggle">
+          <i class="">Menu</i> <i uk-navbar-toggle-icon></i>
+        </span>
       </div>
-
-      <!-- Sidebar navigation -->
-      <div id="offcanvas-push" uk-offcanvas="mode: slide; overlay: true; flip: true">
-        <div class="uk-offcanvas-bar">
-          <!-- Button to close the sidebar navigation -->
-          <button class="uk-offcanvas-close" uk-close></button>
-          <!-- Sidebar navigation links -->
-          <ul class="uk-nav uk-nav-center uk-margin-top">
-            <li class=""><a href="{{ url_for('index_page') }}"><span class="" uk-icon="home"></span>Home</a></li>
-            <li class=""><a href="{{ url_for('about_page') }}"><span class="" uk-icon="info"></span>About</a></li>
-            <li><a href="{{ url_for('login_page') }}"><span class="" uk-icon="sign-in"></span>Login</a></li>
-            <li><a href="{{ url_for('register_page') }}"><span class="" uk-icon="pencil"></span>Register</a></li>
-          </ul>
-        </div> <!-- end off-canvas bar -->
-      </div> <!-- end sidebar navigation -->
     </nav>
   </header>
 

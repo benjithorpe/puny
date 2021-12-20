@@ -13,12 +13,12 @@
           <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
             <span class="uk-form-icon" uk-icon="user"></span>
             {{ form.username(class="uk-input uk-border-rounded", placeholder="Username") }}
-            <!-- display error message using macro -->
-            <div class="form-errors">
-              {% if form.username.errors %}
-                {{ macros.display_errors(form.username.errors) }}
-              {% endif %}
-            </div>
+          </div>
+          <!-- display error message using macro -->
+          <div class="form-errors">
+            {% if form.username.errors %}
+              {{ macros.display_errors(form.username.errors) }}
+            {% endif %}
           </div>
         </div>
 

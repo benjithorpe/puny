@@ -1,65 +1,47 @@
 {% extends "layout.html" %}
 
 {% block main %}
-  <div>
-    <form action="" method="POST" class="uk-form-stacked uk-padding">
-      {{ form.hidden_tag() }}
-      <fieldset class="uk-fieldset">
-        <legend class="uk-legend">Login To Your Account</legend>
+  <form action="" method="POST" class="uk-form-stacked uk-padding">
+    {{ form.hidden_tag() }}
+    <fieldset class="uk-fieldset">
+      <legend class="uk-legend">Login To Your Account</legend>
 
-        <div class="uk-margin-small">
-          <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.email.label }}</label>
-          <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
-            <span class="uk-form-icon" uk-icon="icon: mail"></span>
-            {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="johndoe@email.com") }}
-          </div>
-          <!-- display error message if any -->
-          <div>
-            {% if form.email.errors %}
-              {% for error in form.email.errors %}
-                <small class="uk-text-danger">{{ error }}</small>
-              {% endfor %}
-            {% endif %}
-          </div>
+      <div class="uk-margin-small">
+        <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.email.label }}</label>
+        <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
+          <span class="uk-form-icon" uk-icon="icon: mail"></span>
+          {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="johndoe@email.com") }}
         </div>
-
-        <div class="uk-margin-small">
-          <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.password.label }}</label>
-          <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
-            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-            {{ form.password(class="uk-input uk-border-rounded", placeholder="********") }}
-          </div>
-          <!-- display error message if any -->
-          <div>
-            {% if form.password.errors %}
-              {% for error in form.password.errors %}
-                <small class="uk-text-danger">{{ error }}</small>
-              {% endfor %}
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="uk-margin-top">
-          {{ form.remember_me(class="uk-checkbox uk-border-rounded") }}
-          {{ form.remember_me.label(class="uk-text-meta uk-text-italic") }}
-        </div>
-
-        <div class="uk-margin-top">
-          {{ form.submit(class="uk-button uk-button-primary uk-border-rounded uk-text-bold") }}
-        </div>
-      </fieldset>
-
-      <hr class="uk-horizontal-divider uk-width-1-1 uk-width-1-2@s">
-      <!-- forgot password link -->
-      <div class="uk-margin-small uk-margin-top-remove">
-        <p class="uk-text-small uk-text-italic"><a href="#">Forgot Password?</a></p>
       </div>
-      <!-- create new account link -->
-      <div class="uk-margin-small uk-margin-top-remove">
-        <p class="uk-text-small">Need an account? <span>
-          <a href="{{ url_for('register_page') }}">Register Now</a></span>
-        </p>
+
+      <div class="uk-margin-small">
+        <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.password.label }}</label>
+        <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
+          <span class="uk-form-icon" uk-icon="icon: lock"></span>
+          {{ form.password(class="uk-input uk-border-rounded", placeholder="********") }}
+        </div>
       </div>
-    </form>
-  </div>
+
+      <div class="uk-margin-top">
+        {{ form.remember_me(class="uk-checkbox") }}
+        {{ form.remember_me.label(class="uk-text-meta uk-text-italic") }}
+      </div>
+
+      <div class="uk-margin-top">
+        {{ form.submit(class="uk-button uk-button-primary uk-border-rounded uk-text-bold") }}
+      </div>
+    </fieldset>
+
+    <hr class="uk-horizontal-divider uk-width-1-1 uk-width-1-2@s">
+    <!-- forgot password link -->
+    <div class="uk-margin-small uk-margin-top-remove">
+      <p class="uk-text-small uk-text-italic"><a href="#">Forgot Password?</a></p>
+    </div>
+    <!-- create new account link -->
+    <div class="uk-margin-small uk-margin-top-remove">
+      <p class="uk-text-small">Need an account? <span>
+        <a href="{{ url_for('register_page') }}">Register Now</a></span>
+      </p>
+    </div>
+  </form>
 {% endblock main %}

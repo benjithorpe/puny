@@ -1,26 +1,27 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<section class="articles-post uk-container">
+<section class="">
   {% for post in posts %}
-    <article class="uk-article uk-margin-small-top uk-margin-small-bottom">
-      <div class="uk-card uk-card-small uk-card-hover uk-card-default">
-        <div class="uk-card-header">
-          <div class="uk-grid-small uk-flex-middle" uk-grid>
-            <div class="uk-width-auto">
-              <img class="uk-border-circle" width="50" height="50" uk-img
-                data-src="{{ url_for('static', filename='images/profile-avatar.jpeg') }}">
-            </div>
-            <div class="uk-width-expand">
-              <p><a class="uk-text-bold uk-link-reset" href="">{{ post.author }}</a> -
-                <span class="uk-text-meta">{{ post.date_posted }}</span>
-              </p>
-            </div>
+    <article class="uk-article uk-margin-small-top uk-margin-small-bottom uk-width-2-3@s uk-width-1-2@m">
+      <div class="uk-card uk-card-small uk-card-hover uk-card-default uk-border-rounded">
+        <div class="uk-flex uk-flex-middle uk-flex-center uk-padding-small uk-padding-remove-bottom">
+          <!-- User profile picture -->
+          <div class="uk-width-auto uk-margin-small-right">
+            <img class="uk-border-circle" width="50" height="50" uk-img
+              data-src="{{ url_for('static', filename='images/profile-avatar.jpeg') }}">
+          </div>
+          <!-- Username and date article was posted -->
+          <div class="uk-width-expand">
+            <p class="uk-margin-remove">
+              <a class="uk-link-reset uk-text-bold" href="">{{ post.author }}</a> -
+              <small class="uk-text-italic uk-text-meta">{{ post.date_posted }}</small>
+            </p>
           </div>
         </div>
+        <!-- article content -->
         <div class="uk-card-body">
-          <h3 class="uk-card-title"><a href="">{{ post.title }}</a></h3>
-          <p class="">{{ post.content }}</p>
+          <h3 class="uk-card-title uk-link-reset"><a href="">{{ post.title }}</a></h3>
         </div>
       </div>
     </article>

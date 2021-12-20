@@ -1,53 +1,55 @@
+:root {
+  --nav-bg: #01557e;
+  --white: #ffffff;
+}
 body{
   min-height: 100vh;
   background-color: #F4F9F9;
 }
-.uk-logo, .uk-logo:hover, .menu-toggle{
+.uk-logo, .uk-logo:hover, .uk-navbar-toggle{
   color: white;
 }
-.menu-toggle{
-  margin-right: 1em;
-}
+.uk-navbar-left{ width: 50%; }
 .nav-header{
-  background-color: #01557e;
+  background-color: var(--nav-bg);
   position: sticky;
   top: 0;
   z-index: 100;
 }
-.uk-navbar-container{
+nav ul{
+  display: none;
+  flex-direction: column;
+  gap: .5em;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
   background: inherit !important;
+  z-index: 100;
 }
-.uk-offcanvas-bar{
-  background-color: #06405c;
-}
-main{
-  padding-top: 1em;
-}
-.uk-card{
-  border-radius: 7px;
-}
-.form-errors ul{
-  list-style-type: none;
-}
+nav ul a{ color: white; }
 
+.uk-navbar-container{ background: inherit !important; }
+.form-errors ul{ list-style-type: none; }
 
-@media screen and (min-width: 768px){
-  .nav-header{
-    padding-left: 5vh;
-    padding-right: 5vh;
-  }
-  .menu-toggle{
-    cursor: pointer;
-    margin: 0
-  }
-  article.uk-article{
-    width: 75% ;
-    margin: 0 auto;
-  }
+/* RESPONSIVE MEDIA QUERIES
+======================================================= */
+@media (min-width: 400px) {
+  nav{ padding: 0 .5em; }
 }
-@media screen and (min-width: 992px){
-  article.uk-article{
-    max-width: 55.5% ;
-    margin: 0 auto;
+@media (min-width: 576px) {}
+@media (min-width: 768px) {
+  nav ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1.5em;
+    position: static;
+    background-color: inherit;
   }
+  nav li a:hover{ color: silver; }
 }
+@media (min-width: 992px) {
+  nav{ padding: 0 5em; }
+}
+@media (min-width: 1200px) {}
