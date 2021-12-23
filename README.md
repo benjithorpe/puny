@@ -5,8 +5,8 @@ A blog app made with Flask based on Corey Schafer's tutorial with some few impro
 The aim of building this app was to learn Flask framework deeper and understand how to structure projects
 
 ## Tech Stack
-**Client:** HTML5, CSS3, UIkit(3.9)
-**Server:** Python(3.8), Flask(2.0)
+- **Client:** HTML5, CSS3, UIkit(3.9)
+- **Server:** Python(3.8), Flask(2.0)
 
 ## Features
 - Create Post with Rich Text Editor

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flask Blog</title>
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-  <title>Flask Blog</title>
   <!-- UIkit CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/css/uikit.min.css" />
   <!-- UIkit JS -->
@@ -30,8 +30,13 @@
       <ul class="uk-nav uk-padding-small uk-width-1-1">
         <li class=""><a href="{{ url_for('index_page') }}"><span class="" uk-icon="home"></span>Home</a></li>
         <li class=""><a href="{{ url_for('about_page') }}"><span class="" uk-icon="info"></span>About</a></li>
-        <li><a href="{{ url_for('login_page') }}"><span class="" uk-icon="sign-in"></span>Login</a></li>
-        <li><a href="{{ url_for('register_page') }}"><span class="" uk-icon="pencil"></span>Register</a></li>
+        {% if current_user.is_authenticated %}
+          <li><a href="{{ url_for('account_page') }}"><span class="" uk-icon="cog"></span>Account</a></li>
+          <li><a href="{{ url_for('logout_page') }}"><span class="" uk-icon="sign-out"></span>Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login_page') }}"><span class="" uk-icon="sign-in"></span>Login</a></li>
+          <li><a href="{{ url_for('register_page') }}"><span class="" uk-icon="pencil"></span>Register</a></li>
+        {% endif %}
       </ul>
       <!-- Navbar toggle icon -->
       <div class="uk-navbar-right burger uk-hidden@s">
