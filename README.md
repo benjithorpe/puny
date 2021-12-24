@@ -59,4 +59,7 @@ Start the server
 
 
 ## Lessons Learned
+
+Challenges
+  - Had to delete previous profile pictures to reduce app size, wrote a script to compare the image names and delete it only if it's not the default profile picture.
 What did you learn while building this project? What challenges did you face and how did you overcome them?

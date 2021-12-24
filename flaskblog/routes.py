@@ -1,6 +1,7 @@
 import os
 import secrets
 
+from PIL import Image
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -96,8 +97,11 @@ def save_profile_image(image):
     new_image_name = (random_hex + image_extension)
     image_path = os.path.join(app.root_path,
                             f"static/images/profile_pics/{new_image_name}")
+    # Resize image
+    resized_image = Image.open(image)
+    resized_image.thumbnail((150, 150))
     # Save image to the image_path folder specified
-    image.save(image_path)
+    resized_image.save(image_path)
 
     # Delete previous profile picture if it still exists
     previous_profile_image = os.path.join(app.root_path,
