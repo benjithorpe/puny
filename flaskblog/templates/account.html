@@ -1,5 +1,73 @@
 {% extends "layout.html" %}
+{% import "macros.html" as macros %}
 
 {% block main %}
-  <h1><i>Welcome back</i>: <b>{{ current_user.username|title }}</b></h1>
+  <section class="uk-card-default uk-padding-small uk-width-1-2@m uk-width-2-3@s uk-margin">
+    <div class="uk-flex uk-flex-middle">
+      <!-- User profile picture -->
+      <div class="uk-width-auto uk-margin-small-right">
+        <img class="uk-border-circle" width="150" height="150" src="{{ profile_picture }}">
+      </div>
+      <!-- Username and date article was posted -->
+      <div class="uk-width-expan">
+        <h2 class="uk-margin-remov uk-margin-small-bottom">{{ current_user.username|title }}</h2>
+        <p class="uk-margin-remove uk-text-italic uk-text-muted">{{ current_user.email }}</p>
+      </div>
+    </div>
+
+    <section class="update-account-form uk-margin-small-top">
+      <form action="" method="POST" enctype="multipart/form-data" class="uk-form-stacked uk-padding-small">
+        {{ form.hidden_tag() }}
+        <fieldset class="uk-fieldset">
+          <legend class="uk-legend uk-text-bold">Account Information</legend>
+
+          <div class="uk-margin-small">
+            {{ form.username.label(class="uk-form-label uk-text-muted") }}
+            <div class="uk-inline uk-width-1-1">
+              <span class="uk-form-icon" uk-icon="user"></span>
+              {{ form.username(class="uk-input uk-border-rounded", placeholder="Username") }}
+            </div>
+            <!-- display error message using macro -->
+            <div class="form-errors">
+              {% if form.username.errors %}
+                {{ macros.display_errors(form.username.errors) }}
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="uk-margin-small">
+            {{ form.email.label(class="uk-form-label uk-text-muted") }}
+            <div class="uk-inline uk-width-1-1">
+              <span class="uk-form-icon" uk-icon="mail"></span>
+              {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="Email Address") }}
+            </div>
+            <!-- display error message using macro -->
+            <div class="form-errors">
+              {% if form.email.errors %}
+                {{ macros.display_errors(form.email.errors) }}
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="uk-margin-small">
+            {{ form.profile_picture.label(class="uk-form-label uk-text-muted") }}
+            <div class="">
+              {{ form.profile_picture(class="") }}
+            </div>
+            <!-- display error message using macro -->
+            <div class="form-errors">
+              {% if form.profile_picture.errors %}
+                {{ macros.display_errors(form.profile_picture.errors) }}
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="uk-margin-top">
+            {{ form.submit(class="uk-button uk-button-primary uk-border-rounded uk-text-bold") }}
+          </div>
+        </fieldset>
+
+      </form>
+    </section> <!-- update account form -->
+  </section>
 {% endblock main %}

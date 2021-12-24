@@ -2,7 +2,7 @@
 {% import "macros.html" as macros %}
 
 {% block main %}
-  <div class="">
+  <section class="">
     <form action="" method="POST" class="uk-form-stacked uk-padding-small">
       {{ form.hidden_tag() }}
       <fieldset class="uk-fieldset">
@@ -26,7 +26,7 @@
           <label class="uk-form-label uk-text-bold" for="form-stacked-text">{{ form.email.label }}</label>
           <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
             <span class="uk-form-icon" uk-icon="mail"></span>
-            {{ form.email(class="uk-input uk-border-rounded", placeholder="Email Address") }}
+            {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="Email Address") }}
           </div>
           <!-- display error message using macro -->
           <div class="form-errors">
@@ -76,6 +76,5 @@
         </p>
       </div>
     </form>
-
-  </div>
+  </section>
 {% endblock main %}
