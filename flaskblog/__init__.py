@@ -1,22 +1,16 @@
-import os
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or "secret key"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///flaskblog.db"
-
-# Initialize the extensions
+app.config["SECRET_KEY"] = "1f951234638afa9c490caac6630059bf70e1405e"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
+db.create_all()
 login_manager = LoginManager(app)
-# redirect un-authenticated users to login page
 login_manager.login_view = "login_page"
-login_manager.login_message = "Please log in to access that page."
-login_manager.login_message_category = "primary"
+login_manager.login_message_category = "bg-red-200 text-red-900"
 
 from flaskblog import routes

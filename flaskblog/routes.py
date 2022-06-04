@@ -1,142 +1,125 @@
-import os
-import secrets
+from flask import render_template, flash, redirect, url_for, request
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, logout_user, current_user, login_required
 
-from PIL import Image
-from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required, current_user
-
-from flaskblog import app, db, bcrypt
-from flaskblog.forms import LoginForm, RegistrationForm, UpdateAccountForm
+from flaskblog import app, db
+from flaskblog.forms import RegistrationForm, LoginForm
 from flaskblog.models import User, Post
 
 
 posts = [
-    {
-        "author": "John Doe",
-        "title": "First normal title",
-        "content": "This is the first blog content",
-        "date_posted": "January 10, 2021",
-    },
-    {
-        "author": "Jane Smith",
-        "title": "Second Post title",
-        "content": "This is the second blog content",
-        "date_posted": "June 20, 2021",
-    },
-    {
-        "author": "Johnny Kane",
-        "title": "UIkit is awesome",
-        "content": "This is a very long blog content to post here!!",
-        "date_posted": "April 12, 2021",
-    },
+  {
+    "id": 1,
+    "author": "John Doe",
+    "date_posted": "January 12, 2021",
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "content": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+  },
+  {
+    "id": 2,
+    "author": "John Doe",
+    "date_posted": "January 12, 2021",
+    "title": "qui est esse",
+    "content": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+  },
+  {
+    "id": 3,
+    "author": "John Doe",
+    "date_posted": "January 12, 2021",
+    "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+    "content": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
+  },
+  {
+    "id": 4,
+    "author": "John Doe",
+    "date_posted": "January 12, 2021",
+    "title": "eum et est occaecati",
+    "content": "ullam et saepe reiciendis voluptatem adipisci\nsit amet autem assumenda provident rerum culpa\nquis hic commodi nesciunt rem tenetur doloremque ipsam iure\nquis sunt voluptatem rerum illo velit"
+  },
+  {
+    "id": 5,
+    "author": "John Doe",
+    "date_posted": "January 12, 2021",
+    "title": "nesciunt quas odio",
+    "content": "repudiandae veniam quaerat sunt sed\nalias aut fugiat sit autem sed est\nvoluptatem omnis possimus esse voluptatibus quis\nest aut tenetur dolor neque"
+  },
+  {
+    "id": 6,
+    "author": "John Doe",
+    "date_posted": "January 12, 2021",
+    "title": "dolorem eum magni eos aperiam quia",
+    "content": "ut aspernatur corporis harum nihil quis provident sequi\nmollitia nobis aliquid molestiae\nperspiciatis et ea nemo ab reprehenderit accusantium quas\nvoluptate dolores velit et doloremque molestiae"
+  },
 ]
 
-
 @app.route("/")
-def index_page():
+def index():
     return render_template("index.html", posts=posts)
-
-
-@app.route("/about")
-def about_page():
-    return render_template("about.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login_page():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
     form = LoginForm()
 
     if form.validate_on_submit():
+        # Get the first user with the email submitted
         user = User.query.filter_by(email=form.email.data).first()
+        # If user exists, log them in, else display error message
+        if user and check_password_hash(user.password, form.password.data):
+            flash(f"Welcome back {form.email.data}!!",
+                  "bg-green-200 text-green-900")
+            login_user(user, remember=form.remember.data)
 
-        if user and bcrypt.check_password_hash(user.password,
-                                               form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            # Get next page if user has tried to access the restricted page
+            # Get the next page if it exists
             next_page = request.args.get("next")
-            flash("You have been logged in successfully", "success")
             if next_page:
                 return redirect(next_page)
-            return redirect(url_for("index_page"))
+            else:
+                return redirect(url_for("index"))
+            # return redirect(next_page) if next_page else redirect(url_for("index"))
         else:
-            flash("Invalid Email or Password, Try again!!...", "danger")
-            return redirect(url_for("login_page"))
+            flash(f"Invalid email and password, Try again",
+                  "bg-red-200 text-red-900")
 
     return render_template("login.html", form=form)
 
 
-@app.route("/logout")
-@login_required
-def logout_page():
-    logout_user()
-    return redirect(url_for("index_page"))
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        # Hash the user's password from the form
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        # Create a new user to be added to the database
+        # Hash the password using werkzeug
+        hashed_password = generate_password_hash(form.password.data)
+        # Create new user
         user = User(username=form.username.data, email=form.email.data,
                     password=hashed_password)
-        # Add the user to the database
+        # Add user to the database
         db.session.add(user)
         db.session.commit()
-        flash(f"Account Created, you are now able to log in!", "success")
+
+        flash(f"Account created for {form.username.data}",
+              "bg-green-200 text-green-900")
+        login_user(user)
         return redirect(url_for("login_page"))
 
     return render_template("register.html", form=form)
 
 
-def save_profile_image(image):
-    random_hex = secrets.token_hex(8)
-    _, image_extension = os.path.splitext(image.filename)
-    new_image_name = (random_hex + image_extension)
-    image_path = os.path.join(app.root_path,
-                            f"static/images/profile_pics/{new_image_name}")
-    # Resize image
-    resized_image = Image.open(image)
-    resized_image.thumbnail((150, 150))
-    # Save image to the image_path folder specified
-    resized_image.save(image_path)
-
-    # Delete previous profile picture if it still exists
-    previous_profile_image = os.path.join(app.root_path,
-                            f"static/images/profile_pics/"
-                            + current_user.profile_picture)
-    try:
-        if previous_profile_image != os.path.join(app.root_path,
-                            "static/images/profile_pics/default_profile.jpg"):
-            os.remove(previous_profile_image)
-    except FileNotFoundError:
-        pass
-    # Return the random new image name generated
-    return new_image_name
-
-@app.route("/account", methods=["GET", "POST"])
+@app.route("/profile")
 @login_required
-def account_page():
-    form = UpdateAccountForm()
-    if form.validate_on_submit():
-        # Check if profile image was updated
-        if form.profile_picture.data:
-            # Rename the picture uploaded then update the database
-            updated_image = save_profile_image(form.profile_picture.data)
-            current_user.profile_picture = updated_image
+def profile_page():
+    return render_template("profile.html")
 
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        db.session.commit()
-        flash("Your Account has been updated", "success")
-        return redirect(url_for("account_page"))
-    # Populate form with user data
-    elif request.method == "GET":
-        form.username.data = current_user.username
-        form.email.data = current_user.email
-        profile_picture = url_for('static', filename=
-                        f"images/profile_pics/{current_user.profile_picture}")
-    return render_template("account.html", form=form,
-                           profile_picture=profile_picture)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("index"))

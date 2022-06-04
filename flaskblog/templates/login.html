@@ -1,47 +1,52 @@
 {% extends "layout.html" %}
 
+<!-- main content -->
 {% block main %}
-  <form action="" method="POST" class="uk-form-stacked uk-padding">
+<section
+  class="container mx-auto grid min-h-[90vh] items-center justify-center"
+>
+  <form method="POST" action="" class="rounded bg-white p-10 shadow-md">
+    <!-- Hidden tags / CSRF_token -->
     {{ form.hidden_tag() }}
-    <fieldset class="uk-fieldset">
-      <legend class="uk-legend">Login To Your Account</legend>
 
-      <div class="uk-margin-small">
-        <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.email.label }}</label>
-        <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
-          <span class="uk-form-icon" uk-icon="icon: mail"></span>
-          {{ form.email(class="uk-input uk-border-rounded", type="email", placeholder="johndoe@email.com") }}
-        </div>
+    <fieldset>
+      <legend class="mb-7 text-center text-xl">Login to your Account</legend>
+
+      <div class="mb-4">
+        {{ form.email.label(class_="block font-light") }}
+        <!-- form input -->
+        {{ form.email(class="rounded w-full bg-gray-100 border-slate-300") }}
+
+        <!-- display error messages -->
+        {% for error in form.email.errors %}
+        <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        {% endfor %}
       </div>
 
-      <div class="uk-margin-small">
-        <label class="uk-form-label uk-text-bold" for="form-stacked-select">{{ form.password.label }}</label>
-        <div class="uk-inline uk-width-1-1 uk-width-1-2@s">
-          <span class="uk-form-icon" uk-icon="icon: lock"></span>
-          {{ form.password(class="uk-input uk-border-rounded", placeholder="********") }}
-        </div>
+      <div class="mb-4">
+        {{ form.password.label(class_="block font-light") }}
+        <!-- form input -->
+        {{ form.password(class="rounded w-full bg-gray-100 border-slate-300") }}
       </div>
 
-      <div class="uk-margin-top">
-        {{ form.remember_me(class="uk-checkbox") }}
-        {{ form.remember_me.label(class="uk-text-meta uk-text-italic") }}
+      <div class="mb-4">
+        {{ form.remember(class="rounded-full text-blue-500") }}
+        <!-- remember me checkbox -->
+        {{ form.remember.label(class_="font-light text-sm text-gray-500") }}
       </div>
 
-      <div class="uk-margin-top">
-        {{ form.submit(class="uk-button uk-button-primary uk-border-rounded uk-text-bold") }}
-      </div>
+      {{ form.submit(class="rounded-full bg-slate-600 py-2 w-full font-normal
+      text-white cursor-pointer hover:shadow-sm hover:bg-slate-500",
+      id="loginBtn" ) }}
     </fieldset>
 
-    <hr class="uk-horizontal-divider uk-width-1-1 uk-width-1-2@s">
-    <!-- forgot password link -->
-    <div class="uk-margin-small uk-margin-top-remove">
-      <p class="uk-text-small uk-text-italic"><a href="#">Forgot Password?</a></p>
-    </div>
-    <!-- create new account link -->
-    <div class="uk-margin-small uk-margin-top-remove">
-      <p class="uk-text-small">Need an account? <span>
-        <a href="{{ url_for('register_page') }}">Register Now</a></span>
-      </p>
-    </div>
+    <hr class="mt-5 mb-2" />
+    <p class="text-sm italic text-gray-600">
+      Need an account?
+      <a href="{{ url_for('register_page') }}" class="text-blue-500">
+        Sign Up Now
+      </a>
+    </p>
   </form>
+</section>
 {% endblock main %}

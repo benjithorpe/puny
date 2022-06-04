@@ -1,69 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flask Blog</title>
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-  <!-- UIkit CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/css/uikit.min.css" />
-  <!-- UIkit JS -->
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit.min.js"></script>
-  <!-- UIkit Icons -->
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.9.4/dist/js/uikit-icons.min.js"></script>
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <!-- Custom JS -->
-  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flaskblog</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bundle.css') }}"
+    />
+  </head>
+  <body class="bg-slate-100">
+    <!-- Navigation -->
+    <header class="bg-slate-500">
+      <nav
+        class="container mx-auto flex min-h-[10vh] max-w-5xl items-center justify-between px-3 md:px-[10vw]"
+      >
+        <!-- brand -->
+        <div class="brand text-xl font-bold text-white">
+          <a href="/">Flaskblog</a>
+        </div>
+        <!-- Menu items -->
+        <div class="flex gap-3 text-white">
+          <a href="{{ url_for('index') }}">Home</a>
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('profile_page') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+          {% else %}
+          <a href="{{ url_for('login_page') }}">Login</a>
+          <a href="{{ url_for('register_page') }}">Register</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
 
-<body>
-  <header class="nav-header uk-box-shadow-small">
-    <nav class="uk-navbar-container uk-flex-middle" uk-navbar>
-      <!-- Navbar/Brand Logo -->
-      <div class="uk-navbar-left">
-        <a class="uk-navbar-item uk-logo uk-text-bold uk-text-italic"
-          href="{{ url_for('index_page') }}">Flask Blog</a>
-      </div>
-      <!-- Navigation items -->
-      <ul class="uk-nav uk-padding-small uk-width-1-1">
-        <li class=""><a href="{{ url_for('index_page') }}"><span class="" uk-icon="home"></span>Home</a></li>
-        <li class=""><a href="{{ url_for('about_page') }}"><span class="" uk-icon="info"></span>About</a></li>
-        {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('account_page') }}"><span class="" uk-icon="cog"></span>Account</a></li>
-          <li><a href="{{ url_for('logout_page') }}"><span class="" uk-icon="sign-out"></span>Logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('login_page') }}"><span class="" uk-icon="sign-in"></span>Login</a></li>
-          <li><a href="{{ url_for('register_page') }}"><span class="" uk-icon="pencil"></span>Register</a></li>
-        {% endif %}
-      </ul>
-      <!-- Navbar toggle icon -->
-      <div class="uk-navbar-right burger uk-hidden@s">
-        <span class="uk-navbar-toggle">
-          <i class="">Menu</i> <i uk-navbar-toggle-icon></i>
-        </span>
-      </div>
-    </nav>
-  </header>
-
-  <main class="uk-container">
-    <!-- Display flash messages -->
-    <div class="uk-margin-remove">
-      {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <div class="uk-alert-{{ category }} uk-margin-remove" uk-alert>
-              <a class="uk-alert-close" uk-close></a>
-              <p>{{ message }}</p>
-            </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    <!-- check if messages exists -->
+    {% if messages %}
+    <!-- Loop through messages -->
+    {% for category, message in messages %}
+    <div class="container mx-auto {{ category }} p-4 my-2 rounded">
+      {{ message }}
     </div>
-    <!-- End flash messages -->
+    {% endfor %}
+    <!-- end if statement -->
+    {% endif %}
+    <!-- end with statement -->
+    {% endwith %}
 
-    {% block main %}{% endblock main %}
-  </main>
-</body>
+    <!-- Main -->
+    <main class="">{% block main %}{% endblock main %}</main>
+
+    <!-- Footer -->
+    <footer>{% block footer %} {% endblock footer %}</footer>
+
+    <!-- Extra Javascript -->
+    {% block js %} {% endblock js %}
+  </body>
 </html>

@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+
+<!-- main content -->
+{% block main %}
+<section class="container mx-auto grid max-w-5xl gap-7 py-5 px-3 md:px-[10vw]">
+  <h1 class="text-xl font-bold">Hello {{ current_user.username }}</h1>
+</section>
+{% endblock main %}
