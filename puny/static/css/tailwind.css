@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS classes */
+@layer utilities {
+  .error {
+    @apply bg-red-200 text-red-900;
+  }
+
+  .success {
+    @apply bg-green-200 text-green-900;
+  }
+
+  .info {
+    @apply bg-blue-200 text-blue-900;
+  }
+}

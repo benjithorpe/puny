@@ -1,10 +1,10 @@
+# Javascript files to ignore
 .DS_Store
 node_modules
 /build
 /package
 .env.*
 !.env.example
-
 
 
 # Byte-compiled / optimized / DLL files

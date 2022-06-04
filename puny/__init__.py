@@ -11,6 +11,6 @@ db = SQLAlchemy(app)
 db.create_all()
 login_manager = LoginManager(app)
 login_manager.login_view = "login_page"
-login_manager.login_message_category = "bg-red-200 text-red-900"
+login_manager.login_message_category = "info"
 
-from flaskblog import routes
+from puny import routes

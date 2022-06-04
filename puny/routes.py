@@ -2,9 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 
-from flaskblog import app, db
-from flaskblog.forms import RegistrationForm, LoginForm
-from flaskblog.models import User, Post
+from puny import app, db
+from puny.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from puny.models import User, Post
 
 
 posts = [
@@ -81,8 +81,7 @@ def login_page():
                 return redirect(url_for("index"))
             # return redirect(next_page) if next_page else redirect(url_for("index"))
         else:
-            flash(f"Invalid email and password, Try again",
-                  "bg-red-200 text-red-900")
+            flash(f"Invalid email and password, Try again", "error")
 
     return render_template("login.html", form=form)
 
@@ -104,8 +103,7 @@ def register_page():
         db.session.add(user)
         db.session.commit()
 
-        flash(f"Account created for {form.username.data}",
-              "bg-green-200 text-green-900")
+        flash(f"Account created for {form.username.data}", "success")
         login_user(user)
         return redirect(url_for("login_page"))
 
@@ -115,7 +113,17 @@ def register_page():
 @app.route("/profile")
 @login_required
 def profile_page():
-    return render_template("profile.html")
+    profile_img = url_for('static',
+                          filename=f"images/{current_user.profile_image}")
+
+    return render_template("profile.html", profile_img=profile_img)
+
+
+@app.route("/settings", methods=["GET", "POST"])
+@login_required
+def settings_page():
+    form = UpdateAccountForm()
+    return render_template("settings.html", form=form)
 
 
 @app.route("/logout")

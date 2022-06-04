@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask_login import UserMixin
 
-from flaskblog import login_manager, db
+from puny import login_manager, db
 
 
 @login_manager.user_loader

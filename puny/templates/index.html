@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+<!-- main content -->
+{% block main %}
+<article class="container mx-auto grid max-w-5xl gap-7 py-5 px-3 md:px-[10vw]">
+  {% for post in posts %}
+  <div class="rounded bg-white p-4 shadow">
+    <h2 class="mb-1 text-base font-medium text-gray-800 md:text-xl">
+      {{ post.title }}
+    </h2>
+    <p class="mb-1 text-sm font-light italic text-gray-500">
+      by <a href="#" class="font-normal text-blue-700">@{{ post.author }}</a>
+      on {{ post.date_posted }}
+    </p>
+    <p class="py-2 text-base text-gray-600">{{ post.content|truncate(100) }}</p>
+  </div>
+  {% endfor %}
+</article>
+{% endblock main %}

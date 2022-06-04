@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+<!-- main content -->
+{% block main %}
+<section class="container mx-auto max-w-5xl py-5 px-3 md:px-[10vw]">
+  <form
+    method="POST"
+    action=""
+    class="rounded bg-white p-5 shadow-md md:px-[10vw]"
+  >
+    <!-- Hidden tags / CSRF_token -->
+    {{ form.hidden_tag() }}
+
+    <fieldset>
+      <legend class="mb-7 text-center text-xl text-gray-500">
+        Update Profile
+      </legend>
+
+      <!-- Update profile image -->
+      <div class="mb-4 flex items-center gap-2 md:gap-5">
+        <img
+          src="{{ url_for('static', filename='images/profile.jpg') }}"
+          alt="{{ current_user.username }}'s profile image"
+          width="100"
+          class="rounded-full"
+        />
+        <input
+          type="file"
+          class="text-gray-600 file:border-0 file:py-1 file:px-2 file:text-base file:font-normal hover:file:cursor-pointer"
+        />
+      </div>
+
+      <div class="mb-4">
+        {{ form.username.label(class="block font-light") }}
+        <!-- form input -->
+        {{ form.username(class="rounded w-full bg-gray-100 border-slate-300") }}
+
+        <!-- display error messages -->
+        {% for error in form.username.errors %}
+        <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.email.label(class="block font-light") }}
+        <!-- form input -->
+        {{ form.email(class="rounded w-full bg-gray-100 border-slate-300") }}
+
+        <!-- display error messages -->
+        {% for error in form.email.errors %}
+        <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="mb-4">
+        {{ form.bio.label(class="block font-light") }}
+        <!-- form input -->
+        {{ form.bio(class="rounded w-full bg-gray-100 border-slate-300") }}
+
+        <!-- display error messages -->
+        {% for error in form.bio.errors %}
+        <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      {{ form.submit(class="rounded py-2 px-4 max-w-fit text-white font-normal
+      cursor-pointer hover:bg-blue-600 bg-blue-700") }}
+    </fieldset>
+  </form>
+</section>
+{% endblock main %}

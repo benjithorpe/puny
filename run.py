@@ -1,1 +1,1 @@
-from flaskblog import app
+from puny import app

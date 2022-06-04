@@ -1,26 +1,28 @@
 # flaskblog
 
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/benjithorpe/puny/LICENSE)
 
-A blog app made with Flask based on Corey Schafer's tutorial with some few improvements.
+A simple blog app made with Flask with some few improvements.
 The aim of building this app was to learn Flask framework deeper and understand how to structure projects
 
 ## Tech Stack
 
-- **Client:** HTML5, CSS3, UIkit(3.9)
+- **Client:** HTML5, CSS3, TailwindCSS (v3), JavaScript
 - **Server:** Python(3.8), Flask(2.0)
 
 ## Features
 
-- Create Post with Rich Text Editor
-- Update, Delete, Edit
+- Create, Update, Delete & Edit posts
+- Comment on posts
+- Password reset
 
 ## Run Locally
 
-### Requirements to have
+### Requirements to have _(recommended)_
 
-- Python 3.7+ (recommended)
+- Python 3.7+
 - Git
+- Node (if you need to add to the design)
 
 Clone the project
 
@@ -52,6 +54,16 @@ Install dependencies and packages
   pip install -r requirements.txt
 ```
 
+or
+
+```bash
+# (if you plan to contribute to the design)
+npm i
+
+# build the tailwind class automatically
+npx tailwind -i ./puny/static/css/tailwind.css -o ./puny/static/css/bundle.css --watch
+```
+
 Start the server
 
 ```bash
@@ -63,6 +75,8 @@ Start the server
   flask run
 ```
 
+> Use `set FLASK_APP=run.py` in windows
+
 ## Screenshots
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
@@ -71,5 +85,8 @@ Start the server
 
 Challenges
 
-- Had to delete previous profile pictures to reduce app size, wrote a script to compare the image names and delete it only if it's not the default profile picture.
-  What did you learn while building this project? What challenges did you face and how did you overcome them?
+- Had to delete previous profile pictures to reduce app size
+- wrote a script to compare the image names and delete it only if it's not the default profile picture.
+- Integration with tailwindcss was a bit tricky
+- Database migration
+- Sending E-mail for password reset
