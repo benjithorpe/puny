@@ -69,8 +69,7 @@ def login_page():
         user = User.query.filter_by(email=form.email.data).first()
         # If user exists, log them in, else display error message
         if user and check_password_hash(user.password, form.password.data):
-            flash(f"Welcome back {form.email.data}!!",
-                  "bg-green-200 text-green-900")
+            flash(f"Welcome back {user.username}!!", "success")
             login_user(user, remember=form.remember.data)
 
             # Get the next page if it exists
@@ -123,6 +122,21 @@ def profile_page():
 @login_required
 def settings_page():
     form = UpdateAccountForm()
+
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.bio = form.bio.data
+
+        # Save changes to the database
+        db.session.commit()
+        flash("Your account has been updated successfully", "success")
+        return redirect(url_for("profile_page"))
+    elif request.method == "GET":
+        # Populate the forms
+        form.email.data = current_user.email
+        form.username.data = current_user.username
+        form.bio.data = current_user.bio
     return render_template("settings.html", form=form)
 
 

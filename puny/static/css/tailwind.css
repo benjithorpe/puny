@@ -2,17 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom CSS classes */
-@layer utilities {
-  .error {
-    @apply bg-red-200 text-red-900;
-  }
-
-  .success {
-    @apply bg-green-200 text-green-900;
-  }
-
-  .info {
-    @apply bg-blue-200 text-blue-900;
-  }
+.error {
+  color: rgb(127, 29, 29);
+  background-color: rgb(254, 202, 202);
+}
+.info {
+  color: rgb(30, 58, 138);
+  background-color: rgb(191, 219, 254);
+}
+.success {
+  color: rgb(20, 83, 45);
+  background-color: rgb(187, 247, 208);
 }
