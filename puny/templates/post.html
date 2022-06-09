@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+<!-- main content -->
+{% block main %}
+
+<article class="container mx-auto max-w-5xl py-5 px-1 md:px-[10vw]">
+  <!-- Go back home -->
+  <a
+    href="{{ url_for('index') }}"
+    class="mb-5 block w-fit text-blue-600 hover:text-blue-700"
+  >
+    < Back
+  </a>
+
+  <div class="bg-white p-4">
+    <div class="flex gap-3">
+      <!-- Profile picture -->
+      <div>
+        <img
+          src="/static/uploads/{{ post.author.profile_image }}"
+          alt="{{ post.author.username }}'s profile picture"
+          width="50"
+          height="50"
+          class="rounded-full"
+        />
+      </div>
+      <!-- Username and date -->
+      <div>
+        <h1 class="mb-1 text-base font-medium text-gray-800 md:text-xl">
+          {{ post.title }}
+        </h1>
+        <p class="mb-1 text-sm font-light italic text-gray-500">
+          <a href="#" class="font-normal text-blue-700">
+            @{{ post.author.username }}
+          </a>
+          on {{ post.date_posted.strftime("%b-%d-%Y") }}
+        </p>
+
+        <!-- Check if current user has permission to delete post, then display options to delete or edit -->
+        {% if current_user == post.author %}
+        <!-- Update/Edit and Delete options -->
+        <div class="mt-4 flex gap-3">
+          <a
+            href="{{ url_for('update_post', post_id=post.id) }}"
+            class="text-sm font-light text-blue-500 underline hover:font-normal hover:text-blue-700"
+          >
+            Update
+          </a>
+          <button
+            type="button"
+            class="text-sm font-light text-red-500 underline hover:font-normal hover:text-red-700"
+            id="open-modal"
+          >
+            Delete
+          </button>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <hr class="my-3" />
+    <!-- Post content -->
+    <p class="py-2 text-base text-gray-700">{{ post.content }}</p>
+  </div>
+</article>
+
+<!-- Delete Modal -->
+<section
+  id="modal"
+  class="fixed top-0 bottom-0 left-0 right-0 grid hidden h-screen items-center justify-center bg-[rgba(0,0,0,0.7)]"
+>
+  <!-- Modal contents -->
+  <div class="grid h-52 items-center justify-center bg-white p-5">
+    <h3 class="mb-3 font-normal md:text-xl">
+      Are you sure you want to delete this post?
+    </h3>
+
+    <div class="flex justify-center gap-5">
+      <a
+        href="{{ url_for('delete_post', post_id=post.id) }}"
+        class="bg-red-500 px-6 py-2 text-white"
+        >Yes Please</a
+      >
+      <button
+        type="button"
+        class="border-2 border-blue-300 px-6 py-2 font-light text-blue-500 hover:bg-blue-500 hover:text-white"
+        id="close-modal"
+      >
+        Not Anymore
+      </button>
+    </div>
+  </div>
+</section>
+{% endblock main %}
+
+<!-- Extra Javascript -->
+{% block js %}
+<script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+{% endblock js %}

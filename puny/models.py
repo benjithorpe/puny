@@ -11,14 +11,14 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class User(db.Model, UserMixin):
-    # Convert the uuid to string, take 15 values then convert to int
-    id = db.Column(db.Integer, default=int(str(uuid4().int)[:15]),
+    # Converts the uuid to string, take 15 values then convert to int
+    id = db.Column(db.Integer, default=lambda: int(str(uuid4().int)[:15]),
                         primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     profile_image = db.Column(db.String(20), nullable=False,
-                              default="profile.jpg")
+                              default="default.jpg")
     bio = db.Column(db.String(300), default="Less is More")
     is_admin = db.Column(db.Boolean(), default=False)
 
@@ -30,16 +30,14 @@ class User(db.Model, UserMixin):
 
 
 class Post(db.Model):
-    # Convert the uuid to string, take 15 values then convert to int
-    id = db.Column(db.Integer, default=int(str(uuid4().int)[:15]),
-                        primary_key=True)
+    id = db.Column(db.String, primary_key=True, default=lambda: uuid4().hex)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime(),
-                            nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False,
+                            default=datetime.utcnow)
 
     # Relationships
-    user_id = db.Column(db.String(), db.ForeignKey("user.id"),
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"),
                         nullable=False)
 
     def __repr__(self):
@@ -48,3 +46,6 @@ class Post(db.Model):
 
 class Comment:
     pass
+
+
+db.create_all()

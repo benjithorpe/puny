@@ -1,59 +1,20 @@
+import os
+import secrets
+
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
+from PIL import Image
 
 from puny import app, db
-from puny.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from puny.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
+                        CreatePostForm, UpdatePostForm)
 from puny.models import User, Post
 
 
-posts = [
-  {
-    "id": 1,
-    "author": "John Doe",
-    "date_posted": "January 12, 2021",
-    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-    "content": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-  },
-  {
-    "id": 2,
-    "author": "John Doe",
-    "date_posted": "January 12, 2021",
-    "title": "qui est esse",
-    "content": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
-  },
-  {
-    "id": 3,
-    "author": "John Doe",
-    "date_posted": "January 12, 2021",
-    "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
-    "content": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
-  },
-  {
-    "id": 4,
-    "author": "John Doe",
-    "date_posted": "January 12, 2021",
-    "title": "eum et est occaecati",
-    "content": "ullam et saepe reiciendis voluptatem adipisci\nsit amet autem assumenda provident rerum culpa\nquis hic commodi nesciunt rem tenetur doloremque ipsam iure\nquis sunt voluptatem rerum illo velit"
-  },
-  {
-    "id": 5,
-    "author": "John Doe",
-    "date_posted": "January 12, 2021",
-    "title": "nesciunt quas odio",
-    "content": "repudiandae veniam quaerat sunt sed\nalias aut fugiat sit autem sed est\nvoluptatem omnis possimus esse voluptatibus quis\nest aut tenetur dolor neque"
-  },
-  {
-    "id": 6,
-    "author": "John Doe",
-    "date_posted": "January 12, 2021",
-    "title": "dolorem eum magni eos aperiam quia",
-    "content": "ut aspernatur corporis harum nihil quis provident sequi\nmollitia nobis aliquid molestiae\nperspiciatis et ea nemo ab reprehenderit accusantium quas\nvoluptate dolores velit et doloremque molestiae"
-  },
-]
-
 @app.route("/")
 def index():
+    posts = Post.query.all()
     return render_template("index.html", posts=posts)
 
 
@@ -109,12 +70,38 @@ def register_page():
     return render_template("register.html", form=form)
 
 
+def resize_image(image, size=(125, 125)):
+    resized_image = Image.open(image)
+    resized_image.thumbnail(size)
+    return resized_image
+
+def delete_image(image):
+    print("Image deleted")
+    pass
+
+
+def save_profile(image):
+    # Generate random token string
+    random_hex = secrets.token_hex(8)
+    # Get the extension of the image submitted
+    _, file_ext = os.path.splitext(image.filename)
+    new_image = random_hex + file_ext
+    # Save the new generated image to the uploads folder
+    path = os.path.join(app.root_path, "static/uploads", new_image)
+    # Delete previous profile image
+    delete_image(image)
+    # Resize the image (to save server space)
+    resized_image = resize_image(image)
+    resized_image.save(path)
+
+    return new_image
+
+
 @app.route("/profile")
 @login_required
 def profile_page():
     profile_img = url_for('static',
-                          filename=f"images/{current_user.profile_image}")
-
+                          filename=f'uploads/{current_user.profile_image}')
     return render_template("profile.html", profile_img=profile_img)
 
 
@@ -124,6 +111,12 @@ def settings_page():
     form = UpdateAccountForm()
 
     if form.validate_on_submit():
+        # Check if user has changed their profile, then update it
+        if form.picture.data:
+            picture = save_profile(form.picture.data)
+            current_user.profile_image = picture
+
+        # Update username, email and bio
         current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.bio = form.bio.data
@@ -137,6 +130,7 @@ def settings_page():
         form.email.data = current_user.email
         form.username.data = current_user.username
         form.bio.data = current_user.bio
+
     return render_template("settings.html", form=form)
 
 
@@ -145,3 +139,56 @@ def settings_page():
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+
+@app.route("/post/<post_id>")
+@login_required
+def post_page(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    return render_template("post.html", post=post)
+
+
+@app.route("/post/create", methods=["GET", "POST"])
+@login_required
+def create_post():
+    form = CreatePostForm()
+
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data,
+                    author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash("Your post has been created!", "success")
+        return redirect(url_for("index"))
+
+    return render_template("create-post.html", form=form)
+
+
+@app.route("/post/update/<post_id>", methods=["GET", "POST"])
+@login_required
+def update_post(post_id):
+    # Get the post
+    post = Post.query.filter_by(id=post_id).first()
+    form = UpdatePostForm()
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash("Your post has been updated!", "success")
+        return redirect(url_for("index"))
+        # return redirect(url_for("post", post_id=post.id))
+    elif request.method == "GET":
+        form.title.data = post.title
+        form.content.data = post.content
+
+    return render_template("create-post.html", form=form)
+
+
+@app.route("/post/delete/<post_id>", methods=["GET", "POST"])
+@login_required
+def delete_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    flash("Your post has been updated!", "success")
+    return redirect(url_for("index"))
+

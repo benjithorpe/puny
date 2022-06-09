@@ -4,16 +4,37 @@
 {% block main %}
 <article class="container mx-auto grid max-w-5xl gap-7 py-5 px-3 md:px-[10vw]">
   {% for post in posts %}
-  <div class="rounded bg-white p-4 shadow">
-    <h2 class="mb-1 text-base font-medium text-gray-800 md:text-xl">
-      {{ post.title }}
-    </h2>
-    <p class="mb-1 text-sm font-light italic text-gray-500">
-      by <a href="#" class="font-normal text-blue-700">@{{ post.author }}</a>
-      on {{ post.date_posted }}
-    </p>
-    <p class="py-2 text-base text-gray-600">{{ post.content|truncate(100) }}</p>
+  <div class="flex gap-3 rounded bg-white p-4 shadow">
+    <!-- Profile picture -->
+    <div>
+      <img
+        src="{{ url_for('static', filename='uploads/' + post.author.profile_image) }}"
+        alt="{{ post.author.username }}'s profile picture"
+        width="50"
+        height="50"
+        class="rounded-full"
+      />
+    </div>
+
+    <div>
+      <h2 class="mb-1 text-base font-medium text-gray-800 md:text-xl">
+        <a href="{{ url_for('post_page', post_id=post.id) }}"
+          >{{ post.title|truncate(50) }}</a
+        >
+      </h2>
+      <p class="mb-1 text-sm font-light italic text-gray-500">
+        <a href="#" class="font-normal text-blue-700"
+          >@{{ post.author.username }}</a
+        >
+        on {{ post.date_posted.strftime("%b-%d-%Y") }}
+      </p>
+      <p class="py-2 text-base font-light text-gray-600">
+        {{ post.content|truncate(100) }}
+      </p>
+    </div>
   </div>
+  {% else %}
+  <p>No post has been created yet!!</p>
   {% endfor %}
 </article>
 {% endblock main %}

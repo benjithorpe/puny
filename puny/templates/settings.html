@@ -6,6 +6,7 @@
   <form
     method="POST"
     action=""
+    enctype="multipart/form-data"
     class="rounded bg-white p-5 shadow-md md:px-[10vw]"
   >
     <!-- Hidden tags / CSRF_token -->
@@ -19,15 +20,20 @@
       <!-- Update profile image -->
       <div class="mb-4 flex items-center gap-2 md:gap-5">
         <img
-          src="{{ url_for('static', filename='images/profile.jpg') }}"
+          src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}"
           alt="{{ current_user.username }}'s profile image"
           width="100"
           class="rounded-full"
         />
-        <input
-          type="file"
-          class="text-gray-600 file:border-0 file:py-1 file:px-2 file:text-base file:font-normal hover:file:cursor-pointer"
-        />
+        <div>
+          {{ form.picture(class="text-gray-600 file:border-0 file:py-1 file:px-2
+          file:text-base file:font-normal hover:file:cursor-pointer") }}
+
+          <!-- display error messages -->
+          {% for error in form.picture.errors %}
+          <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+          {% endfor %}
+        </div>
       </div>
 
       <div class="mb-4">
