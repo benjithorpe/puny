@@ -75,6 +75,7 @@ instance/
 .webassets-cache
 *.db
 uploads/*
+!uploads/.gitkeep
 
 # Scrapy stuff:
 .scrapy
