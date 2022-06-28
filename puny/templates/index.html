@@ -16,14 +16,16 @@
       />
     </div>
 
-    <div>
+    <div class="w-full">
       <h2 class="mb-1 text-base font-medium text-gray-800 md:text-xl">
         <a href="{{ url_for('post_page', post_id=post.id) }}"
           >{{ post.title|truncate(50) }}</a
         >
       </h2>
       <p class="mb-1 text-sm font-light italic text-gray-500">
-        <a href="#" class="font-normal text-blue-700"
+        <a
+          href="{{ url_for('profile_page', username=post.author.username) }}"
+          class="font-normal text-blue-700"
           >@{{ post.author.username }}</a
         >
         on {{ post.date_posted.strftime("%b-%d-%Y") }}
@@ -31,6 +33,7 @@
       <p class="py-2 text-base font-light text-gray-600">
         {{ post.content|truncate(100) }}
       </p>
+      <p class="bloc text-right text-sm italic text-gray-500">{0} comments</p>
     </div>
   </div>
   {% else %}

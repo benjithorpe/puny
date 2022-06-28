@@ -1,7 +1,7 @@
 import os
 import secrets
 
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from PIL import Image
@@ -14,7 +14,7 @@ from puny.models import User, Post
 
 @app.route("/")
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.date_posted.desc())
     return render_template("index.html", posts=posts)
 
 
@@ -97,12 +97,13 @@ def save_profile(image):
     return new_image
 
 
-@app.route("/profile")
+@app.route("/profile/<username>")
 @login_required
-def profile_page():
-    profile_img = url_for('static',
-                          filename=f'uploads/{current_user.profile_image}')
-    return render_template("profile.html", profile_img=profile_img)
+def profile_page(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc())
+    print(type(posts))
+    return render_template("profile.html", user=user, posts=list(posts))
 
 
 @app.route("/settings", methods=["GET", "POST"])
@@ -124,7 +125,7 @@ def settings_page():
         # Save changes to the database
         db.session.commit()
         flash("Your account has been updated successfully", "success")
-        return redirect(url_for("profile_page"))
+        return redirect(url_for("profile_page", username=current_user.username))
     elif request.method == "GET":
         # Populate the forms
         form.email.data = current_user.email
@@ -167,16 +168,19 @@ def create_post():
 @app.route("/post/update/<post_id>", methods=["GET", "POST"])
 @login_required
 def update_post(post_id):
-    # Get the post
-    post = Post.query.filter_by(id=post_id).first()
-    form = UpdatePostForm()
+    post = Post.query.get_or_404(post_id)
 
+    # Check if the current user is the one trying to do an update
+    if current_user != post.author:
+        abort(403)
+
+    form = UpdatePostForm()
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
         flash("Your post has been updated!", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("post_page", post_id=post.id))
         # return redirect(url_for("post", post_id=post.id))
     elif request.method == "GET":
         form.title.data = post.title
@@ -185,10 +189,17 @@ def update_post(post_id):
     return render_template("create-post.html", form=form)
 
 
-@app.route("/post/delete/<post_id>", methods=["GET", "POST"])
+@app.post("/post/delete/<post_id>")
 @login_required
 def delete_post(post_id):
-    post = Post.query.filter_by(id=post_id).first()
-    flash("Your post has been updated!", "success")
+    post = Post.query.get_or_404(post_id)
+
+    # Check if the current user is the one trying to do a delete
+    if current_user != post.author:
+        abort(403)
+    # Delete the post
+    db.session.delete(post)
+    db.session.commit()
+    flash("Your post was deleted!", "success")
     return redirect(url_for("index"))
 

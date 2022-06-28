@@ -18,14 +18,17 @@
       >
         <!-- brand -->
         <div class="brand text-xl font-bold text-white">
-          <a href="/">Puny</a>
+          <a href="{{ url_for('index') }}">Puny</a>
         </div>
         <!-- Menu items -->
         <div class="flex gap-3 text-white">
           <a href="{{ url_for('index') }}">Home</a>
           {% if current_user.is_authenticated %}
           <a href="{{ url_for('create_post') }}">Create Post</a>
-          <a href="{{ url_for('profile_page') }}">Profile</a>
+          <a
+            href="{{ url_for('profile_page', username=current_user.username) }}"
+            >Profile</a
+          >
           <a href="{{ url_for('logout') }}">Logout</a>
           {% else %}
           <a href="{{ url_for('login_page') }}">Login</a>
